@@ -1,4 +1,3 @@
-
 ---
 
 # 智能医疗问诊服务系统
@@ -45,8 +44,8 @@
 1. **克隆项目**：
 
    ```bash
-   git clone https://github.com/your-username/medical-chatbot.git
-   cd medical-chatbot
+   git clone https://github.com/huasheng0110/IMC.git
+   cd IMC
    ```
 
 2. **安装依赖**：
@@ -58,7 +57,7 @@
 3. **运行项目**：
 
    ```bash
-   python app.py
+   python run.py
    ```
 
 4. **访问系统**：
