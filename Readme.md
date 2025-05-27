@@ -1,3 +1,4 @@
+
 ---
 
 # 智能医疗问诊服务系统
@@ -27,6 +28,7 @@
 ├── static/               # 前端静态资源 (CSS/JS)
 ├── knowledge/            # 本地知识库文件
 ├── database.db           # SQLite数据库文件
+├── run.py                # 执行文件
 ├── requirements.txt      # 项目依赖
 └── README.md             # 项目说明文件
 ```
