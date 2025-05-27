@@ -2,7 +2,7 @@ import os
 import requests
 
 # 你的 DeepSeek API Key
-api_key = "sk-5654c1ed3ef84f2787591a63821dd45c"  # ←←← 填入你的 API Key
+api_key = "************************************"  # ←←← 填入你的 API Key
 
 def ask_deepseek(user_question):
     # 确保不使用代理
