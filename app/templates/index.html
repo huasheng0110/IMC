@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能医疗问诊系统 - 云端诊断平台</title>
+    <style>
+        :root {
+            --medical-blue: #0078D7;
+            --emergency-red: #D32F2F;
+            --chat-bg: #F5F9FF;
+            --user-bubble: #E3F2FD;
+            --ai-bubble: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            background: var(--chat-bg);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .medical-header {
+            background: linear-gradient(135deg, var(--medical-blue), #005B9F);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 120, 215, 0.2);
+            border-radius: 0 0 2rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .chat-wrapper {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 120, 215, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .message-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            max-width: 80%;
+        }
+
+        .message-bubble {
+            padding: 1.2rem 1.5rem;
+            border-radius: 1.5rem;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .user-bubble {
+            background: var(--user-bubble);
+            border: 1px solid #BBDEFB;
+            border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
+        }
+
+        .bot-bubble {
+            background: var(--ai-bubble);
+            border: 1px solid #E0E0E0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 1.5rem 1.5rem 1.5rem 0.5rem;
+        }
+
+        .input-panel {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 120, 215, 0.1);
+            position: sticky;
+            bottom: 2rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            padding: 1rem 1.5rem;
+            border: 2px solid #E3F2FD;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--medical-blue);
+            box-shadow: 0 0 8px rgba(0, 120, 215, 0.2);
+            outline: none;
+        }
+
+        button {
+            background: var(--medical-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background: #0062AB;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 120, 215, 0.3);
+        }
+
+        .emergency-bar {
+            background: var(--emergency-red);
+            color: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .message-bubble {
+                max-width: 90%;
+            }
+        }
+
+        .medical-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            padding: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header class="medical-header">
+        <div class="container">
+            <h1>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230078D7'%3E%3Cpath d='M12 2L2 12h4v8h12v-8h4L12 2zm-2 15h-2v-6h2v6zm6 0h-2v-6h2v6z'/%3E%3C/svg%3E" 
+                     class="medical-icon"
+                     alt="医疗图标">
+                智能医疗问诊系统
+            </h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="chat-wrapper">
+            <div class="message-group">
+                {% for item in dialog_history %}
+                    <div class="{% if item.user %}user-message{% else %}bot-message{% endif %}">
+                        <div class="message-bubble {% if item.user %}user-bubble{% else %}bot-bubble{% endif %}">
+                            <strong class="role-tag">
+                                {% if item.user %}🟢 患者问诊{% else %}🟡 AI诊断{% endif %}
+                            </strong>
+                            <div class="message-content">
+                                {{ item.user or item.bot }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="input-panel">
+            <form method="post">
+                <input type="text" 
+                       name="question" 
+                       placeholder="请详细描述症状（例：持续3天头痛，体温38.5℃，伴有咳嗽）" 
+                       autocomplete="off"
+                       required>
+                <button type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                        <path d="M3 20v-6l8-2-8-2V4l19 8-19 8z"/>
+                    </svg>
+                    提交问诊
+                </button>
+            </form>
+            <div class="emergency-bar">
+                🚨 紧急情况请立即拨打120急救电话
+            </div>
+        </div>
+
+        <!-- {% if result %}
+        <div class="diagnosis-result">
+            <h2>📋 诊断报告</h2>
+            <div class="result-card">
+                {{ result }}
+            </div>
+        </div>
+        {% endif %} -->
+    </main>
+</body>
+</html>
